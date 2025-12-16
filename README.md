@@ -17,13 +17,13 @@ El sistema opera bajo una arquitectura de comunicación serial dividida en dos e
 ## Conexiones de Hardware y Alimentación
 
 ### Referencia Visual de Conexiones
-![Conexión de Cables](cables.jpg)
+![Conexión de Cables](cables.jpeg)
 *Imagen 1: Identificación de cableado. El cable **verde** se conecta al polo positivo de la fuente y el cable **amarillo** al polo negativo (tierra).*
 
 > [!IMPORTANT]
 > [cite_start]**Nota de Alimentación:** Para evitar daños en el microcontrolador y asegurar que los servomotores dispongan del torque necesario, se requiere el uso de una fuente de poder externa ajustada a **5V**. [cite: 7]
 
-![Fuente de Poder](fuente.jpg)
+![Fuente de Poder](fuente.jpeg)
 *Imagen 2: Configuración de la fuente de poder externa a 5V.*
 
 * **Conexión de la fuente**: Deben conectarse los dos cables libres de la fuente externa: el positivo al pin **V+** y el negativo al pin **GND** de la placa PCA9685.
@@ -46,7 +46,7 @@ Para una correcta referencia del montaje mecánico, se presentan las vistas fron
 
 | Vista Frontal | Vista Posterior |
 | :---: | :---: |
-| ![Mano Frente](frontal.jpg) | ![Mano Detrás](trasera.jpg) |
+| ![Mano Frente](frontal.jpeg) | ![Mano Detrás](trasera.jpeg) |
 
 ---
 
