@@ -46,7 +46,7 @@ Para una correcta referencia del montaje mecánico, se presentan las vistas fron
 
 | Vista Frontal | Vista Posterior |
 | :---: | :---: |
-| ![Mano Frente](frontal.jpeg) | ![Mano Detrás](trasera.jpeg) |
+| ![Mano Frente](trasera.jpeg) | ![Mano Detrás](frontal.jpeg) |
 
 ---
 
