@@ -34,9 +34,9 @@ El sistema opera bajo una arquitectura de comunicación serial dividida en dos e
 | :--- | :--- |
 | **Meñique** | Canal 0 |
 | **Pulgar** | Canal 1 |
-| **Anular** | Canal 2 [cite: 5] |
-| **Medio** | Canal 3 [cite: 5] |
-| **Índice** | [cite_start]Canal 4 [cite: 5] |
+| **Anular** | Canal 2 |
+| **Medio** | Canal 3 |
+| **Índice** | Canal 4 |
 
 ---
 
@@ -56,7 +56,7 @@ Para una correcta referencia del montaje mecánico, se presentan las vistas fron
 El script detecta de forma automática si la mano detectada es la **derecha o la izquierda**, ajustando la lógica de extensión del pulgar según corresponda. El sistema incorpora un **buffer de estabilidad** de 5 frames para impedir movimientos erráticos.
 
 ### Control de Movimiento (Arduino)
-[cite_start]Se implementa la función `moverServoSuave`, la cual desplaza los servos en incrementos de 5 unidades con un retardo de 5ms[cite: 9, 10, 11]. [cite_start]Esta técnica garantiza un desplazamiento fluido y protege la integridad mecánica[cite: 11].
+Se implementa la función `moverServoSuave`, la cual desplaza los servos en incrementos de 5 unidades con un retardo de 5ms. Esta técnica garantiza un desplazamiento fluido y protege la integridad mecánica de los componentes.
 
 ---
 
@@ -64,10 +64,15 @@ El script detecta de forma automática si la mano detectada es la **derecha o la
 
 Para garantizar el funcionamiento correcto del sistema, es necesario seguir estrictamente el siguiente orden:
 
-1.  [cite_start]**Carga del Código Arduino:** Se debe subir el archivo `mano_final_1.ino` a la placa utilizando el IDE de Arduino[cite: 1].
+1.  **Carga del Código Arduino:** Se debe subir el archivo `mano_final_1.ino` a la placa utilizando el IDE de Arduino.
 2.  **Preparación del Puerto:** Una vez cargado el programa, se debe verificar que el Monitor Serie del IDE esté **cerrado** para liberar el puerto COM.
-3.  **Ejecución del Script Python:** Con el programa de Arduino en ejecución, se debe iniciar el script `python "mano camara final.py"`.
-4.  [cite_start]**Verificación de Operación:** El programa de Python enviará comandos en tiempo real, mientras la placa Arduino procesa dichas instrucciones en segundo plano[cite: 12].
+3.  **Ejecución del Script Python:** Con el programa de Arduino en ejecución y el puerto COM libre, se debe iniciar el script `python "mano camara final.py"`.
+4.  **Verificación de Operación:** El programa de Python enviará comandos en tiempo real, mientras la placa Arduino procesa dichas instrucciones en segundo plano para coordinar los servos.
+
+---
+
+**Desarrollado por:** Maria-Ignacia Rojas, FabLab UV
+**Versión:** v2.0 – Terminado
 
 ---
 
