@@ -1,6 +1,6 @@
 # Control de mano con servos mediante cámara, Arduino y Python
 
-**Estado:** En desarrollo
+**Estado:** Terminado
 
 Actualmente el sistema controla 5 dedos y gestos predefinidos, pero se planea ampliar la detección, añadir más grados de libertad y mejorar la precisión del movimiento.
 
