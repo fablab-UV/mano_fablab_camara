@@ -71,5 +71,6 @@ Para garantizar el funcionamiento correcto del sistema, es necesario seguir estr
 
 ---
 
-**Desarrollado por:** Maria-Ignacia Rojas, FabLab UV
+**Desarrollado por:** Maria-Ignacia Rojas, FabLab UV.
+
 **Versión:** v2.0 – Terminado
