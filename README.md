@@ -1,140 +1,70 @@
-# Control de mano con servos mediante cámara, Arduino y Python
+**# Control de Mano Robótica con Servos (Cámara + Arduino + Python)
 
-**Estado:** Terminado
+**Estado:** Terminado (Versión 2.0)
 
-Actualmente el sistema controla 5 dedos y gestos predefinidos, pero se planea ampliar la detección, añadir más grados de libertad y mejorar la precisión del movimiento.
-
----
-
-## Descripción general
-
-Este proyecto permite controlar una mano robótica mediante gestos de la mano humana detectados con una cámara web.
-El sistema utiliza **Python** (con OpenCV y MediaPipe) para el reconocimiento visual y **Arduino** para el control de los servomotores.
-
-Cuando se detecta un gesto (por ejemplo, “paz”, “índice”, “pulgar arriba”, etc.), el programa en Python envía un comando al Arduino a través del puerto serie.
-El Arduino interpreta este comando y mueve los servos de la mano robótica para imitar el gesto.
+Este proyecto permite el control en tiempo real de una mano robótica de 5 dedos mediante visión artificial. El sistema procesa gestos de la mano humana captados por una webcam y los traduce en movimientos coordinados a través de un controlador PWM.
 
 ---
 
-## Tecnologías utilizadas
+## Descripción General
 
-* **Python 3**
-* **OpenCV**: Captura y procesamiento de video.
-* **MediaPipe Hands**: Detección de puntos clave de la mano.
-* **Arduino UNO / Nano**
-* **Adafruit PCA9685**: Controlador PWM para hasta 16 servos.
-* **Librerías de Arduino:**
-
-  * `Wire.h`
-  * `Adafruit_PWMServoDriver.h`
+El sistema funciona mediante una arquitectura de comunicación serial:
+1.  **Visión (Python):** Utiliza MediaPipe para identificar los puntos clave de la mano y determinar qué dedos están extendidos.
+2.  **Control (Arduino):** Recibe comandos de texto y gestiona una placa PCA9685 para mover los servos con interpolación suave.
 
 ---
 
-## Estructura del proyecto
+## Conexiones de Hardware y Alimentación
 
-### Código en Python
+> [!IMPORTANTE]
+> **Nota Crítica de Alimentación:** Para evitar daños al Arduino y asegurar que los servos tengan suficiente fuerza, se requiere una fuente de poder externa de **5V**.
+> * **Conexión de la fuente:** Conecta únicamente los dos cables libres de tu fuente externa: el positivo al pin **V+** y el negativo al pin **GND** de la regleta de alimentación de la PCA9685.
+> * **Tierra común:** El GND de la fuente debe estar compartido con el GND del Arduino para cerrar el circuito de señal.
 
-El programa:
-
-1. Captura el video desde la cámara.
-2. Detecta la posición de los dedos mediante MediaPipe.
-3. Determina qué dedos están levantados o cerrados.
-4. Asocia combinaciones de dedos a gestos predefinidos.
-5. Envía el nombre del gesto al Arduino por puerto serie.
-
-### Código en Arduino
-
-El programa:
-
-* Recibe los comandos enviados desde Python.
-* Interpreta el gesto recibido.
-* Mueve los servos a las posiciones definidas para cada dedo.
-* Permite configurar las posiciones abiertas y cerradas de los servos según el montaje físico.
+| Componente | Conexión Arduino |
+| :--- | :--- |
+| **PCA9685 - SDA** | Pin A4 |
+| **PCA9685 - SCL** | Pin A5 |
+| **PCA9685 - VCC** | Pin 5V (Lógica del chip) |
+| **PCA9685 - GND** | Pin GND |
+| **Servos** | Canales 0 a 4 del PCA9685 |
 
 ---
 
-## Gestos reconocidos actualmente
+## Funcionamiento del Software
 
-| Gesto detectado | Acción en la mano robótica            |
-| --------------- | ------------------------------------- |
-| CERRAR          | Cierra todos los dedos                |
-| ABRIR           | Abre todos los dedos                  |
-| PULGAR          | Solo mueve el pulgar                  |
-| INDICE          | Solo mueve el índice                  |
-| MEDIO           | Solo mueve el dedo medio              |
-| PAZ             | Mueve índice y medio                  |
-| TRES_DEDOS      | Mueve índice, medio y anular          |
-| CUATRO_DEDOS    | Mueve índice, medio, anular y meñique |
+### Detección de Gestos (Python)
+El script detecta automáticamente si la mano es **Derecha o Izquierda** para corregir la lógica del pulgar. Implementa un **buffer de estabilidad** de 5 frames para evitar movimientos erráticos por detecciones falsas.
 
----
+### Control de Movimiento (Arduino)
+El código Arduino utiliza una función de `moverServoSuave` que desplaza los servos en pasos de 5 unidades con un delay de 5ms. Esto asegura un movimiento fluido y protege la estructura mecánica de la mano.
 
-## Conexiones de hardware
-
-| Componente     | Conexión Arduino                  |
-| -------------- | --------------------------------- |
-| PCA9685 - SDA  | A4                                |
-| PCA9685 - SCL  | A5                                |
-| PCA9685 - VCC  | 5V                                |
-| PCA9685 - GND  | GND                               |
-| Servos         | Canales 0–4 del PCA9685           |
-| Fuente externa | 5V (V+) y GND (compartido con Arduino) |
+| Gesto Detectado | Acción en la Mano |
+| :--- | :--- |
+| **ABRIR / CERRAR** | Mueve todos los dedos a su posición límite. |
+| **PULGAR / INDICE / etc.** | Cierra el dedo indicado y mantiene el resto abiertos. |
+| **PAZ / TRES / CUATRO** | Abre los dedos indicados y cierra los demás. |
 
 ---
 
-## Instalación y uso
+## Instalación y Orden de Ejecución
 
-### En Arduino IDE
+Para un funcionamiento correcto, es obligatorio seguir estrictamente este orden:
 
-1. Instalar las librerías necesarias:
-
-   * Adafruit PWM Servo Driver Library
-   * Wire
-2. Cargar el código del Arduino proporcionado.
-3. Conectar el Arduino al PC y anotar el puerto COM correspondiente.
-
-### En Python
-
-1. Instalar dependencias:
-
-   ```bash
-   pip install opencv-python mediapipe pyserial
-   ```
-2. Editar el puerto serial en el código:
-
-   ```python
-   arduino = serial.Serial('COM7', 9600)
-   ```
-3. Ejecutar el programa:
-
-   ```bash
-   python control_mano.py
-   ```
-4. Apuntar la cámara hacia la mano y realizar los gestos.
+1.  **Cargar el Código Arduino:** Primero, sube el archivo `mano_final_1.ino` a tu placa desde el IDE de Arduino.
+2.  **Preparar el entorno:** Una vez cargado el código, asegúrate de que el Monitor Serie del IDE esté **cerrado** para que el puerto COM quede libre.
+3.  **Ejecutar Python:** * Con el Arduino ejecutándose en segundo plano, abre una terminal y asegúrate de tener instaladas las librerías (`opencv-python`, `mediapipe`, `pyserial`).
+    * Ejecuta el script: `python "mano camara final.py"`.
+    * **Resultado:** Python tomará el control del puerto serie y enviará los comandos de los gestos detectados por la cámara.
 
 ---
 
-## Próximas mejoras (en desarrollo)
+## Notas de Configuración
 
-* Reconocimiento de nuevos gestos como “ok”, “rock” o “puño”.
-* Filtrado y suavizado de detección para reducir errores.
-* Interfaz gráfica que muestre el estado de la mano robótica.
-* Modo de calibración de posiciones desde software.
+* **Puerto Serial:** En el archivo de Python, verifica que la línea `serial.Serial('COM4', 9600)` coincida con el puerto asignado a tu Arduino en el Administrador de Dispositivos.
+* **Calibración:** Los valores de los servos (abierto/cerrado) están ajustados específicamente en los arrays `servoOpen` y `servoClose` del código Arduino para cada dedo (Meñique, Pulgar, Anular, Medio, Índice).
 
 ---
 
-## Ejemplo de uso
-
-```
-[Python] Gesto detectado: PAZ
-[Arduino] Ejecutando gesto: índice + medio
-```
-
-La mano robótica replica el gesto ✌️ frente a la cámara.
-
----
-
-Créditos
-
-Desarrollado por [Maria-Ignacia Rojas, FabLab UV]
-Basado en tecnologías de *OpenCV*, *MediaPipe* y *Adafruit*.
-Versión actual: *v1 – En desarrollo*
+**Desarrollado por:** Maria-Ignacia Rojas, FabLab UV
+**Versión:** v2.0 – Terminado
