@@ -9,8 +9,8 @@ Este proyecto permite el control en tiempo real de una mano robótica de 5 dedos
 ## Descripción General
 
 El sistema opera bajo una arquitectura de comunicación serial dividida en dos etapas:
-1.  [cite_start]**Etapa de Visión (Python):** Se utiliza la librería MediaPipe para identificar los puntos clave de la mano y determinar qué dedos se encuentran extendidos en cada fotograma[cite: 1, 2].
-2.  [cite_start]**Etapa de Control (Arduino):** El microcontrolador recibe comandos de texto por puerto serie y gestiona una placa PCA9685 para mover los servomotores con una lógica de interpolación suave[cite: 1, 11].
+1.  **Etapa de Visión (Python):** Se utiliza la librería MediaPipe para identificar los puntos clave de la mano y determinar qué dedos se encuentran extendidos en cada fotograma.
+2.  **Etapa de Control (Arduino):** El microcontrolador recibe comandos de texto por puerto serie y gestiona una placa PCA9685 para mover los servomotores con una lógica de interpolación suave.
 
 ---
 
@@ -21,7 +21,7 @@ El sistema opera bajo una arquitectura de comunicación serial dividida en dos e
 *Imagen 1: Identificación de cableado. El cable **verde** se conecta al polo positivo de la fuente y el cable **amarillo** al polo negativo (tierra).*
 
 > [!IMPORTANT]
-> [cite_start]**Nota de Alimentación:** Para evitar daños en el microcontrolador y asegurar que los servomotores dispongan del torque necesario, se requiere el uso de una fuente de poder externa ajustada a **5V**. [cite: 7]
+> **Nota de Alimentación:** Para evitar daños en el microcontrolador y asegurar que los servomotores dispongan del torque necesario, se requiere el uso de una fuente de poder externa ajustada a **5V**.
 
 ![Fuente de Poder](fuente.jpeg)
 *Imagen 2: Configuración de la fuente de poder externa a 5V.*
@@ -32,10 +32,10 @@ El sistema opera bajo una arquitectura de comunicación serial dividida en dos e
 ### Mapeo de Canales (PCA9685)
 | Dedo | Canal PCA9685 |
 | :--- | :--- |
-| **Meñique** | [cite_start]Canal 0 [cite: 5] |
-| **Pulgar** | [cite_start]Canal 1 [cite: 5] |
-| **Anular** | [cite_start]Canal 2 [cite: 5] |
-| **Medio** | [cite_start]Canal 3 [cite: 5] |
+| **Meñique** | Canal 0 |
+| **Pulgar** | Canal 1 |
+| **Anular** | Canal 2 [cite: 5] |
+| **Medio** | Canal 3 [cite: 5] |
 | **Índice** | [cite_start]Canal 4 [cite: 5] |
 
 ---
